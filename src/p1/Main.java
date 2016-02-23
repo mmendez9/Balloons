@@ -33,14 +33,17 @@ public class Main {
                 do {
                     System.out.print("Enter a size: ");
                     size = input.nextInt();
+                    // Validate the size
                     System.out.println(Balloon.IsValidSize(size));
                 } while(Balloon.IsValidSize(size) == "Invalid size");
                 do {
                     System.out.print("Enter a color: ");
                     color = input.next();
+                    // Validate the color
                     System.out.println(Balloon.IsValidColor(color));
                 }while(Balloon.IsValidColor(color) == "Invalid color");
                 Balloons[i] = new Balloon(size, color);
+                System.out.println(Balloons[i]);
             }
         }
 
@@ -63,7 +66,8 @@ class Balloon {
 
     //Validate the color
     static String IsValidColor(String c) {
-        if (c == "red" || c == "blue" || c == "green" || c == "yellow")
+        if (c.equalsIgnoreCase("red") || c.equalsIgnoreCase("blue")
+                || c.equalsIgnoreCase("green") || c.equalsIgnoreCase("yellow"))
             return "Valid color";
         else
             return "Invalid color";
