@@ -11,7 +11,7 @@ public class Main {
     public static void main(String[] args) {
         Balloon[] Balloons = new Balloon[5];
         String choose;
-        String color = "red";
+        String color;
         int size;
         char c;
 
@@ -29,14 +29,19 @@ public class Main {
         // Test the chosen option
         if (c == 'C') {
             for (int i = 0; i < Balloons.length; i++) {
-                System.out.print("Balloon " + (i + 1) + " enter a size: ");
-                size = input.nextInt();
-                if (Balloons[i] != null) {
-                    Balloons[i] = new Balloon(size, color);
-                }
+                System.out.print("Balloon " + (i + 1) + "\n");
+                do {
+                    System.out.print("Enter a size: ");
+                    size = input.nextInt();
+                    System.out.println(Balloon.IsValidSize(size));
+                } while(Balloon.IsValidSize(size) == "Invalid size");
+                do {
+                    System.out.print("Enter a color: ");
+                    color = input.next();
+                    System.out.println(Balloon.IsValidColor(color));
+                }while(Balloon.IsValidColor(color) == "Invalid color");
+                Balloons[i] = new Balloon(size, color);
             }
-            for (Balloon each : Balloons)
-                System.out.println(each);
         }
 
     }
@@ -48,6 +53,22 @@ class Balloon {
     boolean inflated;
     private static int quantity = 0;
 
+    //Validate the size
+    static String IsValidSize(int s) {
+        if (s == 6 || s == 8 || s == 10 || s == 12)
+            return "Valid size";
+        else
+            return "Invalid size";
+    }
+
+    //Validate the color
+    static String IsValidColor(String c) {
+        if (c == "red" || c == "blue" || c == "green" || c == "yellow")
+            return "Valid color";
+        else
+            return "Invalid color";
+    }
+
     // Constructor receives size and color
     Balloon(int s, String c) {
         s = size;
@@ -55,7 +76,7 @@ class Balloon {
         quantity++;
     }
 
-    // Return the size
+/*    // Return the size
     public int getSize(int s) {
         s = size;
         return size;
@@ -65,7 +86,7 @@ class Balloon {
     public String getColor(String c) {
         c = color;
         return color;
-    }
+    }*/
 
     @Override
     public String toString() {
