@@ -10,43 +10,86 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Balloon[] Balloons = new Balloon[5];
-        String choose;
-        String color;
-        int size;
         char c;
 
-        // Print Menu
-        String[] menu = {"[C]reate", "[D]estroy", "[I]nflate", "[Q]uit"};
-        Scanner input = new Scanner(System.in);
+        do {
+            // Print Menu
+            String[] menu = {"[C]reate", "[D]estroy", "[I]nflate", "[Q]uit"};
+            Scanner input = new Scanner(System.in);
 
-        // Prompt the user to create, destroy or inflate a balloon
-        for (String each : menu) System.out.println(each);
-        System.out.print("Choose an action: ");
-        choose = input.next();
-        choose = choose.toUpperCase();
-        c = choose.charAt(0);
+            // Prompt the user to create, destroy or inflate a balloon
+            for (String each : menu) System.out.println(each);
+            System.out.print("Choose an action: ");
+            String choose = input.next();
+            choose = choose.toUpperCase();
+            c = choose.charAt(0);
 
-        // Test the chosen option
-        if (c == 'C') {
-            for (int i = 0; i < Balloons.length; i++) {
-                System.out.print("Balloon " + (i + 1) + "\n");
-                do {
-                    System.out.print("Enter a size: ");
-                    size = input.nextInt();
-                    // Validate the size
-                    System.out.println(Balloon.IsValidSize(size));
-                } while(Balloon.IsValidSize(size) == "Invalid size");
-                do {
-                    System.out.print("Enter a color: ");
-                    color = input.next();
-                    // Validate the color
-                    System.out.println(Balloon.IsValidColor(color));
-                }while(Balloon.IsValidColor(color) == "Invalid color");
-                Balloons[i] = new Balloon(size, color);
-                System.out.println(Balloons[i]);
+            // Test the chosen option
+            //Create a balloon
+            if (c == 'C') {
+                for (int i = 0; i < Balloons.length; i++) {
+                    System.out.print("Balloon " + (i + 1) + "\n");
+                    int size;
+                    String color;
+                    Balloons[0] = new Balloon();
+                    do {
+                        System.out.print("Enter a size: ");
+                        size = input.nextInt();
+                        Balloon.getSize(size);
+                        // Validate the size
+                        System.out.println(Balloon.IsValidSize(size));
+                        System.out.print("Enter a color: ");
+                        color = input.next();
+                        Balloon.getColor(color);
+                        // Validate the color
+                        System.out.println(Balloon.IsValidColor(color));
+                    }
+                    while ((Balloon.IsValidSize(size).equals("Invalid size")) || (Balloon.IsValidColor(color).equals("Invalid color")));
+                    System.out.println(Balloons[i] = new Balloon(size, color));
+                }
+                for (Balloon each : Balloons) {
+                    System.out.println(each);
+                }
+                System.out.println("We have made " + Balloon.getQuantity() + " balloons");
             }
-        }
+            // Destroy a balloon
+            else if (c == 'D') {
+                // Print all balloons
+                for (Balloon each : Balloons) {
+                    for (int i = 0; i < Balloons.length; i++)
+                        System.out.println(i + " " + each);
+                }
 
+                System.out.print("Which balloon do you want to destroy? ");
+                int ans = input.nextInt();
+                Balloon.destroy(ans, Balloons);
+
+                // Print all balloons including destroyed ones
+                for (Balloon each : Balloons) {
+                    for (int i = 0; i < Balloons.length; i++)
+                        System.out.println(i + " " + each);
+                }
+                System.out.println("We have " + Balloon.getQuantity() + " balloons");
+            }
+            // Inflated a balloon
+            else if (c == 'I') {
+                // Print all balloons
+                for (Balloon each : Balloons) {
+                    for (int i = 0; i < Balloons.length; i++)
+                        System.out.println(i + " " + each);
+                }
+
+                System.out.print("Which balloon do you want to inflate? ");
+                int ans = input.nextInt();
+                Balloons[ans].inflated = true;
+
+                // Print all balloons including inflated ones
+                for (Balloon each : Balloons) {
+                    for (int i = 0; i < Balloons.length; i++)
+                        System.out.println(i + " " + each);
+                }
+            }
+        } while (c != 'Q');
     }
 }
 
@@ -55,6 +98,36 @@ class Balloon {
     private String color;
     boolean inflated;
     private static int quantity = 0;
+
+    // Default constructor
+    Balloon(){
+        size = 10;
+        color = "red";
+        inflated = false;
+    }
+    // Constructor receives size and color
+    Balloon(int s, String c) {
+        size = s;
+        color = c;
+        quantity++;
+    }
+
+    // Return the size
+    public static int getSize(int s) {
+        Balloon.IsValidSize(s);
+        return s;
+    }
+
+    // Return the color
+    public static String getColor(String c) {
+        Balloon.IsValidColor(c);
+        return c;
+    }
+
+    // Return quantity
+    static int getQuantity() {
+        return quantity;
+    }
 
     //Validate the size
     static String IsValidSize(int s) {
@@ -73,30 +146,18 @@ class Balloon {
             return "Invalid color";
     }
 
-    // Constructor receives size and color
-    Balloon(int s, String c) {
-        s = size;
-        c = color;
-        quantity++;
+    // Destroy a balloon
+    public static void destroy(int d, Balloon[] arg) {
+        quantity--;
+        arg[d] = null;
     }
-
-/*    // Return the size
-    public int getSize(int s) {
-        s = size;
-        return size;
-    }
-
-    // Return the color
-    public String getColor(String c) {
-        c = color;
-        return color;
-    }*/
 
     @Override
     public String toString() {
         return "Balloon{" +
                 "size=" + size +
                 ", color='" + color + '\'' +
+                ", inflated=" + inflated +
                 '}';
     }
 }
