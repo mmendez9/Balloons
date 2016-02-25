@@ -2,7 +2,7 @@ package p1;
 /*
     * Mayra Mendez
     * CIS 150-401
-    *Balloon Demo (Create, Destroy, & Inflate)
+    *Balloon Demo (Create, Destroy, & Inflate Balloons)
 */
 
 import java.util.Scanner;
@@ -27,24 +27,33 @@ public class Main {
             // Test the chosen option
             //Create a balloon
             if (c == 'C') {
+                System.out.print("How many balloon do you want to create? ");
+                int n = input.nextInt();
+                Balloons = new Balloon[n];
                 for (int i = 0; i < Balloons.length; i++) {
                     System.out.print("Balloon " + (i + 1) + "\n");
                     int size;
                     String color;
-                    Balloons[0] = new Balloon();
                     do {
-                        System.out.print("Enter a size: ");
+                        //Ask the user for a size
+                        System.out.print("Enter a size (6, 8, 10, 12): ");
                         size = input.nextInt();
                         Balloon.getSize(size);
+
                         // Validate the size
                         System.out.println(Balloon.IsValidSize(size));
-                        System.out.print("Enter a color: ");
+                    } while (Balloon.IsValidSize(size).equals("Invalid size"));
+
+                    do {
+                        //Ask the user for a color
+                        System.out.print("Enter a color (red, blue, green, yellow): ");
                         color = input.next();
                         Balloon.getColor(color);
+
                         // Validate the color
                         System.out.println(Balloon.IsValidColor(color));
-                    }
-                    while ((Balloon.IsValidSize(size).equals("Invalid size")) || (Balloon.IsValidColor(color).equals("Invalid color")));
+                    } while (Balloon.IsValidColor(color).equals("Invalid color"));
+
                     System.out.println(Balloons[i] = new Balloon(size, color));
                 }
                 for (Balloon each : Balloons) {
@@ -55,41 +64,49 @@ public class Main {
             // Destroy a balloon
             else if (c == 'D') {
                 // Print all balloons
-                for (Balloon each : Balloons) {
-                    for (int i = 0; i < Balloons.length; i++)
-                        System.out.println(i + " " + each);
-                }
+                for (Balloon each : Balloons)
+                    System.out.println(each);
 
                 System.out.print("Which balloon do you want to destroy? ");
                 int ans = input.nextInt();
-                Balloon.destroy(ans, Balloons);
+
+                // Balloon exist
+                if (Balloons[ans] == null)
+                    System.out.println("The balloon doesn't exist");
+                else {
+                    // Destroy balloon
+                    Balloon.destroy(ans, Balloons);
+                }
 
                 // Print all balloons including destroyed ones
                 for (Balloon each : Balloons) {
-                    for (int i = 0; i < Balloons.length; i++)
-                        System.out.println(i + " " + each);
+                    System.out.println(each);
                 }
-                System.out.println("We have " + Balloon.getQuantity() + " balloons");
             }
             // Inflated a balloon
             else if (c == 'I') {
                 // Print all balloons
                 for (Balloon each : Balloons) {
-                    for (int i = 0; i < Balloons.length; i++)
-                        System.out.println(i + " " + each);
+                    System.out.println(each);
                 }
 
                 System.out.print("Which balloon do you want to inflate? ");
                 int ans = input.nextInt();
-                Balloons[ans].inflated = true;
+
+                if (Balloons[ans] == null)
+                    System.out.println("The balloon doesn't exist");
+                else {
+                    // Inflate the balloon
+                    Balloons[ans].inflated = true;
+                }
 
                 // Print all balloons including inflated ones
                 for (Balloon each : Balloons) {
-                    for (int i = 0; i < Balloons.length; i++)
-                        System.out.println(i + " " + each);
+                    System.out.println(each);
                 }
             }
         } while (c != 'Q');
+        System.out.println("We already have " + Balloon.getQuantity() + " balloon(s)");
     }
 }
 
@@ -99,12 +116,6 @@ class Balloon {
     boolean inflated;
     private static int quantity = 0;
 
-    // Default constructor
-    Balloon(){
-        size = 10;
-        color = "red";
-        inflated = false;
-    }
     // Constructor receives size and color
     Balloon(int s, String c) {
         size = s;
@@ -151,6 +162,7 @@ class Balloon {
         quantity--;
         arg[d] = null;
     }
+
 
     @Override
     public String toString() {
