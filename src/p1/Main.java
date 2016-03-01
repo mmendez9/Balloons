@@ -70,13 +70,11 @@ public class Main {
                 System.out.print("Which balloon do you want to destroy? ");
                 int ans = input.nextInt();
 
-                // Balloon exist
-                if (Balloons[ans] == null)
-                    System.out.println("The balloon doesn't exist");
-                else {
-                    // Destroy balloon
-                    Balloon.destroy(ans, Balloons);
-                }
+                // Validate if Balloon exists
+                if (Balloon.IsValidBalloon(Balloons[ans]) == true)
+                    // Destroy a balloon
+                    Balloon.destroy(ans,Balloons);
+                else System.out.println("Balloon doesn't exist");
 
                 // Print all balloons including destroyed ones
                 for (Balloon each : Balloons) {
@@ -93,12 +91,13 @@ public class Main {
                 System.out.print("Which balloon do you want to inflate? ");
                 int ans = input.nextInt();
 
-                if (Balloons[ans] == null)
-                    System.out.println("The balloon doesn't exist");
-                else {
-                    // Inflate the balloon
-                    Balloons[ans].inflated = true;
+                // Validate if Balloon exists
+                if (Balloon.IsValidBalloon(Balloons[ans]) == true) {
+                    if (Balloon.IsBalloonInflated(ans, Balloons) == false)
+                        Balloon.inflate(ans, Balloons);
+                    else System.out.println("Balloon is inflated");
                 }
+                else System.out.println("Balloon doesn't exist");
 
                 // Print all balloons including inflated ones
                 for (Balloon each : Balloons) {
@@ -157,13 +156,32 @@ class Balloon {
             return "Invalid color";
     }
 
+    // Balloon exists
+    public static boolean IsValidBalloon(Balloon arg) {
+        if (arg != null)
+            return true;
+        else
+            return false;
+    }
+
     // Destroy a balloon
     public static void destroy(int d, Balloon[] arg) {
         quantity--;
         arg[d] = null;
     }
 
+    // Is Balloon inflated
+    public static boolean IsBalloonInflated (int i, Balloon[] arg) {
+        if (arg[i].inflated == true)
+            return true;
+        else
+            return false;
+    }
 
+    // Inflate a balloon
+    public static void inflate(int i, Balloon[] arg) {
+        arg[i].inflated = true;
+    }
     @Override
     public String toString() {
         return "Balloon{" +
