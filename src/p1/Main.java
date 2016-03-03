@@ -59,6 +59,7 @@ public class Main {
                 for (Balloon each : Balloons) {
                     System.out.println(each);
                 }
+                System.out.println();
                 System.out.println("We have made " + Balloon.getQuantity() + " balloons");
             }
             // Destroy a balloon
@@ -80,6 +81,8 @@ public class Main {
                 for (Balloon each : Balloons) {
                     System.out.println(each);
                 }
+                System.out.println();
+                System.out.println("Now we have " + Balloon.getQuantity() + " balloons");
             }
             // Inflated a balloon
             else if (c == 'I') {
@@ -105,6 +108,7 @@ public class Main {
                 }
             }
         } while (c != 'Q');
+        System.out.println();
         System.out.println("We already have " + Balloon.getQuantity() + " balloon(s)");
     }
 }
