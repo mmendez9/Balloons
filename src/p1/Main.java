@@ -16,9 +16,9 @@ public class Main {
             // Print Menu
             String[] menu = {"[C]reate", "[D]estroy", "[I]nflate", "[Q]uit"};
             Scanner input = new Scanner(System.in);
+            for (String each : menu) System.out.println(each);
 
             // Prompt the user to create, destroy or inflate a balloon
-            for (String each : menu) System.out.println(each);
             System.out.print("Choose an action: ");
             String choose = input.next();
             choose = choose.toUpperCase();
@@ -31,7 +31,7 @@ public class Main {
                 int n = input.nextInt();
                 Balloons = new Balloon[n];
                 for (int i = 0; i < Balloons.length; i++) {
-                    System.out.print("Balloon " + (i + 1) + "\n");
+                    System.out.print("Balloon " + i + "\n");
                     int size;
                     String color;
                     do {
@@ -56,39 +56,46 @@ public class Main {
 
                     System.out.println(Balloons[i] = new Balloon(size, color));
                 }
+                System.out.println("\nWe have made " + Balloon.getQuantity() + " balloons");
                 for (Balloon each : Balloons) {
                     System.out.println(each);
                 }
-                System.out.println("We have made " + Balloon.getQuantity() + " balloons");
+                System.out.println();
             }
             // Destroy a balloon
             else if (c == 'D') {
+                System.out.println();
                 // Print all balloons
                 for (Balloon each : Balloons)
                     System.out.println(each);
 
-                System.out.print("Which balloon do you want to destroy? ");
+                System.out.print("\nEnter a number starting from zero \nWhich balloon do you want to destroy? ");
                 int ans = input.nextInt();
 
                 // Validate if Balloon exists
-                if (Balloon.IsValidBalloon(Balloons[ans]) == true)
+                if (Balloon.IsValidBalloon(Balloons[ans]) == true) {
                     // Destroy a balloon
-                    Balloon.destroy(ans,Balloons);
+                    Balloon.destroy(ans, Balloons);
+                }
                 else System.out.println("Balloon doesn't exist");
 
                 // Print all balloons including destroyed ones
                 for (Balloon each : Balloons) {
+                    if (each != null)
                     System.out.println(each);
+                    else System.out.println("Balloon destroyed");
                 }
+                System.out.println();
             }
             // Inflated a balloon
             else if (c == 'I') {
+                System.out.println();
                 // Print all balloons
                 for (Balloon each : Balloons) {
                     System.out.println(each);
                 }
 
-                System.out.print("Which balloon do you want to inflate? ");
+                System.out.print("\nEnter a number starting from zero \nWhich balloon do you want to inflate? ");
                 int ans = input.nextInt();
 
                 // Validate if Balloon exists
@@ -96,15 +103,24 @@ public class Main {
                     if (Balloon.IsBalloonInflated(ans, Balloons) == false)
                         Balloon.inflate(ans, Balloons);
                     else System.out.println("Balloon is inflated");
-                }
-                else System.out.println("Balloon doesn't exist");
+                } else System.out.println("Balloon doesn't exist");
 
                 // Print all balloons including inflated ones
                 for (Balloon each : Balloons) {
-                    System.out.println(each);
+                    if (each != null)
+                        System.out.println(each);
+                    else System.out.println("Balloon destroyed");
                 }
+                System.out.println();
             }
         } while (c != 'Q');
+        System.out.println();
+        // Print all balloons
+        for (Balloon each : Balloons) {
+            if (each != null)
+                System.out.println(each);
+            else System.out.println("Balloon destroyed");
+        }
         System.out.println("We already have " + Balloon.getQuantity() + " balloon(s)");
     }
 }
@@ -171,7 +187,7 @@ class Balloon {
     }
 
     // Is Balloon inflated
-    public static boolean IsBalloonInflated (int i, Balloon[] arg) {
+    public static boolean IsBalloonInflated(int i, Balloon[] arg) {
         if (arg[i].inflated == true)
             return true;
         else
@@ -182,6 +198,7 @@ class Balloon {
     public static void inflate(int i, Balloon[] arg) {
         arg[i].inflated = true;
     }
+
     @Override
     public String toString() {
         return "Balloon{" +
